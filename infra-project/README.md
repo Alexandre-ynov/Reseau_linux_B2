@@ -4,7 +4,7 @@ Ce projet contient la configuration complète de l'infrastructure réseau Linux 
 
 ## Architecture
 
-Voir le schéma d'infrastructure : `schema-infra.png`
+Voir le schéma d'infrastructure : `schema-infra.svg`
 
 ## Composants
 
