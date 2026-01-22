@@ -1,0 +1,40 @@
+#!/bin/bash
+set -euo pipefail
+
+
+BACKUP_USER="backupuser"
+BACKUP_HOST="192.168.60.2"
+BACKUP_BASE="/backups"
+HOSTNAME=$(hostname -s)
+LOGFILE="/var/log/rsync-backup.log"
+DATE=$(date +%F)
+
+# Répertoires à sauvegarder
+SOURCES=(
+  "/etc"
+  "/var/www"
+)
+
+# Exclusions système
+EXCLUDES=(
+  "/dev/*"
+  "/proc/*"
+  "/sys/*"
+  "/tmp/*"
+  "/run/*"
+)
+
+
+echo "[$(date)] Début backup $HOSTNAME" >> "$LOGFILE"
+
+for SRC in "${SOURCES[@]}"; do
+  NAME=$(basename "$SRC")
+
+  rsync -aAXz --delete \
+    $(printf -- "--exclude=%s " "${EXCLUDES[@]}") \
+    "$SRC/" \
+    "${BACKUP_USER}@${BACKUP_HOST}:${BACKUP_BASE}/${HOSTNAME}/${NAME}/" \
+    >> "$LOGFILE" 2>&1
+done
+
+echo "[$(date)] Fin backup $HOSTNAME" >> "$LOGFILE"
