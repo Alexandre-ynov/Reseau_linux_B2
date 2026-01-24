@@ -1,0 +1,1 @@
+Pour garantir la haute disponibilité et la sécurité du système, on a séparé le bastion du serveur de monitoring. Le bastion expose ses métriques via node_exporter, et le serveur de monitoring (Prometheus/Grafana) vient les récupérer à travers le réseau ADMIN vers MONITORING.

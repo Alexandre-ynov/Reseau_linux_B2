@@ -1,0 +1,53 @@
+global:
+  scrape_interval:     15s
+  evaluation_interval: 15s
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets: ['localhost:9093']
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:  - "/etc/prometheus/teleport_rules.yml"
+
+scrape_configs:
+  # Monitoring health of the Monitoring VM (Hardware)
+  - job_name: 'Monitoring-OS'
+    static_configs:
+      - targets: ['localhost:9090','localhost:9100']
+
+  # Zone ADMIN
+  # Monitoring health of the Bastion VM (Hardware)
+  - job_name: 'Bastion-OS'
+    static_configs:
+      - targets: ['192.168.40.2:9100']
+      
+  # Monitoring the Teleport service specifically (Software)
+  - job_name: 'Teleport-Service'
+    static_configs:
+      - targets: ['192.168.40.2:3025']
+
+  # Zone DMZ
+  - job_name: "web-server"
+    static_configs:
+      - targets: ["192.168.10.2:9100"]
+
+  # Zone VPN
+  - job_name: "vpn-wireguard"
+    static_configs:
+      - targets: ["192.168.20.2:9100"]
+
+  # Zone LAN
+  - job_name: "database-mariadb"
+    static_configs:
+      - targets: ["192.168.30.10:9100"]
+
+  - job_name: "file-server-samba"
+    static_configs:
+      - targets: ["192.168.30.20:9100"]
+
+  # Zone BACKUP
+  - job_name: "backup-server"
+    static_configs:
+      - targets: ["192.168.60.2:9100"]

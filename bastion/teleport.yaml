@@ -1,0 +1,22 @@
+version: v3
+teleport:
+  nodename: GoldenImage
+  data_dir: /var/lib/teleport
+  log:
+    output: stderr
+    severity: INFO
+
+auth_service:
+  enabled: "yes"
+  cluster_name: bastion-SSH
+  listen_addr: 0.0.0.0:3025
+  proxy_listener_mode: multiplex
+  session_recording: "node"
+
+ssh_service:
+  enabled: "yes"
+
+proxy_service:
+  enabled: "yes"
+  web_listen_addr: 0.0.0.0:3080
+  public_addr: 192.168.40.2:3080

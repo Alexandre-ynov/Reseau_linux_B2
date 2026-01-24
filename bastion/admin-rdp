@@ -1,0 +1,9 @@
+kind: role
+version: v5
+metadata:
+  name: admin-rdp
+spec:
+  allow:
+    windows_desktop_labels:
+      '*': '*'
+    windows_desktop_logins: ['Administrator', 'admin']

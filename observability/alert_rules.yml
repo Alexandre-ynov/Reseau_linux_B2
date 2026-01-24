@@ -1,0 +1,55 @@
+groups:
+  # BASTION SECURITY (ADMIN ZONE)
+  - name: security_rules
+    rules:
+      - alert: UnauthorizedAccessHours
+        # Monitors Bastion activity outside of 08:30 - 17:30
+        expr: |
+          prometheus_http_requests_total > 0
+          and (hour() < 8 or (hour() == 8 and minute() < 30) or hour() >= 17 or (hour() == 17 and minute() > 30))
+        for: 10s
+        labels:
+          severity: critical
+          zone: admin
+        annotations:
+          summary: "SECURITY ALERT: Unauthorized Bastion access detected!"
+          description: "Activity detected on the Bastion host outside of business hours (08:30 - 17:30)."
+
+  # INFRASTRUCTURE HEALTH  
+  - name: infrastructure_health
+    rules:
+      - alert: HostDown
+        # Detects if a VM (Web, DB, Bastion...) is unreachable
+        expr: up == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Instance Down: {{ $labels.instance }}"
+          description: "The target {{ $labels.instance }} has been unreachable for more than 1 minute."
+
+      - alert: HighCPUUsage
+        # Triggered if any VM exceeds 80% CPU usage
+        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High CPU Usage on {{ $labels.instance }}"
+          description: "CPU usage is above 80% (current value: {{ $value | printf \"%.2f\" }}%)."
+
+  # CRITICAL STORAGE (LAN ZONE)
+  - name: storage_alerts
+    rules:
+      - alert: LowDiskSpace
+        # Strict monitoring > 90% for Database and File Servers
+        expr: (1 - node_filesystem_avail_bytes{job=~"database.*|file-server.*"} / node_filesystem_size_bytes) * 100 > 90
+        for: 5m
+        labels:
+          severity: critical
+          zone: lan
+        annotations:
+          summary: "Critical Disk Usage on {{ $labels.instance }}"
+          description: "Disk usage on the root partition is above 90% (current value: {{ $value | printf \"%.2f\" }}%)."
+
+
