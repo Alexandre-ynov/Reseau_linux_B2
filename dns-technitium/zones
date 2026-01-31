@@ -1,0 +1,191 @@
+```
+Record Name: @
+Type: A
+IPv4 Address: 192.168.10.2
+TTL: 3600
+→ Add Record
+```
+```
+Record Name: www
+Type: A
+IPv4 Address: 192.168.10.2
+TTL: 3600
+→ Add Record
+```
+```
+Record Name: web
+Type: A
+IPv4 Address: 192.168.10.2
+TTL: 3600
+→ Add Record
+```
+```
+Record Name: db
+Type: A
+IPv4 Address: 192.168.30.10
+TTL: 3600
+→ Add Record
+```
+```
+Record Name: database
+Type: A
+IPv4 Address: 192.168.30.10
+TTL: 3600
+→ Add Record
+```
+```
+Record Name: dns
+Type: A
+IPv4 Address: 192.168.30.30
+TTL: 3600
+→ Add Record
+```
+```
+Record Name: files
+Type: A
+IPv4 Address: 192.168.30.20
+TTL: 3600
+→ Add Record
+```
+```
+Record Name: bastion
+Type: A
+IPv4 Address: 192.168.40.2
+TTL: 3600
+→ Add Record
+```
+```
+Record Name: vpn
+Type: A
+IPv4 Address: 192.168.20.2
+TTL: 3600
+→ Add Record
+```
+```
+Record Name: firewall
+Type: A
+IPv4 Address: 192.168.30.1
+TTL: 3600
+→ Add Record
+```
+```
+Record Name: prometheus
+Type: A
+IPv4 Address: 192.168.50.2
+TTL: 3600
+→ Add Record
+```
+```
+Record Name: grafana
+Type: A
+IPv4 Address: 192.168.50.3
+TTL: 3600
+→ Add Record
+```
+```
+Record Name: backup
+Type: A
+IPv4 Address: 192.168.60.2
+TTL: 3600
+→ Add Record
+```
+
+### ** CNAME Records (Aliases):**
+```
+Record Name: monitor
+Type: CNAME
+Domain Name: grafana.techstart.local
+TTL: 3600
+→ Add Record
+```
+```
+Record Name: metrics
+Type: CNAME
+Domain Name: prometheus.techstart.local
+TTL: 3600
+→ Add Record
+```
+
+---
+
+### **Reverse Zone for DMZ (192.168.10.0/28):**
+
+```
+   Zone Name: 10.168.192.in-addr.arpa
+   Type: Primary Zone
+```
+
+** PTR Record:**
+```
+Record Name: 2
+Type: PTR
+Domain Name: web.techstart.local
+TTL: 3600
+→ Add Record
+```
+
+### **Reverse Zone for LAN (192.168.30.0/24):**
+
+```
+   Zone Name: 30.168.192.in-addr.arpa
+   Type: Primary Zone
+```
+
+** PTR Records:**
+```
+Record Name: 10
+Type: PTR
+Domain Name: db.techstart.local
+TTL: 3600
+```
+```
+Record Name: 20
+Type: PTR
+Domain Name: files.techstart.local
+TTL: 3600
+```
+```
+Record Name: 30
+Type: PTR
+Domain Name: dns.techstart.local
+TTL: 3600
+```
+
+### **Reverse Zone for ADMIN (192.168.40.0/29):**
+```
+Zone Name: 40.168.192.in-addr.arpa
+Type: Primary Zone
+
+PTR Record:
+2 → bastion.techstart.local
+```
+
+### **Reverse Zone for VPN (192.168.20.0/27):**
+```
+Zone Name: 20.168.192.in-addr.arpa
+Type: Primary Zone
+
+PTR Record:
+2 → vpn.techstart.local
+```
+
+### **Reverse Zone for Monitoring (192.168.50.0/28):**
+```
+Zone Name: 50.168.192.in-addr.arpa
+Type: Primary Zone
+
+PTR Records:
+2 → prometheus.techstart.local
+3 → grafana.techstart.local
+```
+
+### **Reverse Zone for Backup (192.168.60.0/28):**
+```
+Zone Name: 60.168.192.in-addr.arpa
+Type: Primary Zone
+
+PTR Record:
+2 → backup.techstart.local
+```
+
+---
